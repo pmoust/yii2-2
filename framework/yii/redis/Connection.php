@@ -1,9 +1,7 @@
 <?php
 /**
- * Connection class file
- *
  * @link http://www.yiiframework.com/
- * @copyright Copyright &copy; 2008 Yii Software LLC
+ * @copyright Copyright (c) 2008 Yii Software LLC
  * @license http://www.yiiframework.com/license/
  */
 
@@ -22,6 +20,7 @@ use yii\helpers\Inflector;
  *
  * @property string $driverName Name of the DB driver. This property is read-only.
  * @property boolean $isActive Whether the DB connection is established. This property is read-only.
+ * @property LuaScriptBuilder $luaScriptBuilder This property is read-only.
  * @property Transaction $transaction The currently active transaction. Null if no active transaction. This
  * property is read-only.
  *
@@ -329,6 +328,14 @@ class Connection extends Component
 		} else {
 			return 'redis';
 		}
+	}
+
+	/**
+	 * @return LuaScriptBuilder
+	 */
+	public function getLuaScriptBuilder()
+	{
+		return new LuaScriptBuilder();
 	}
 
 	/**

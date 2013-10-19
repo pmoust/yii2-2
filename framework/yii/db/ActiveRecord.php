@@ -384,7 +384,7 @@ class ActiveRecord extends Model
 				return $this->_related[$t];
 			}
 			$value = parent::__get($name);
-			if ($value instanceof ActiveRelation) {
+			if ($value instanceof ActiveRelation || $value instanceof \yii\redis\ActiveRelation) { // TODO this should be done differently remove dep on redis
 				return $this->_related[$t] = $value->multiple ? $value->all() : $value->one();
 			} else {
 				return $value;
@@ -1270,7 +1270,7 @@ class ActiveRecord extends Model
 		$getter = 'get' . $name;
 		try {
 			$relation = $this->$getter();
-			if ($relation instanceof ActiveRelation) {
+			if ($relation instanceof ActiveRelation || $relation instanceof \yii\redis\ActiveRelation) { // TODO this should be done differently remove dep on redis
 				return $relation;
 			}
 		} catch (UnknownMethodException $e) {
@@ -1308,9 +1308,7 @@ class ActiveRecord extends Model
 			if (is_array($relation->via)) {
 				/** @var $viaRelation ActiveRelation */
 				list($viaName, $viaRelation) = $relation->via;
-				/** @var $viaClass ActiveRecord */
 				$viaClass = $viaRelation->modelClass;
-				$viaTable = $viaClass::tableName();
 				// unset $viaName so that it can be reloaded to reflect the change
 				unset($this->_related[strtolower($viaName)]);
 			} else {
@@ -1327,8 +1325,19 @@ class ActiveRecord extends Model
 			foreach ($extraColumns as $k => $v) {
 				$columns[$k] = $v;
 			}
-			static::getDb()->createCommand()
-				->insert($viaTable, $columns)->execute();
+			if (is_array($relation->via)) {
+				/** @var $viaClass ActiveRecord */
+				/** @var $record ActiveRecord */
+				$record = new $viaClass();
+				foreach($columns as $column => $value) {
+					$record->$column = $value;
+				}
+				$record->insert(false);
+			} else {
+				/** @var $viaTable string */
+				static::getDb()->createCommand()
+					->insert($viaTable, $columns)->execute();
+			}
 		} else {
 			$p1 = $model->isPrimaryKey(array_keys($relation->link));
 			$p2 = $this->isPrimaryKey(array_values($relation->link));
@@ -1383,9 +1392,7 @@ class ActiveRecord extends Model
 			if (is_array($relation->via)) {
 				/** @var $viaRelation ActiveRelation */
 				list($viaName, $viaRelation) = $relation->via;
-				/** @var $viaClass ActiveRecord */
 				$viaClass = $viaRelation->modelClass;
-				$viaTable = $viaClass::tableName();
 				unset($this->_related[strtolower($viaName)]);
 			} else {
 				$viaRelation = $relation->via;
@@ -1398,15 +1405,35 @@ class ActiveRecord extends Model
 			foreach ($relation->link as $a => $b) {
 				$columns[$b] = $model->$a;
 			}
-			$command = static::getDb()->createCommand();
-			if ($delete) {
-				$command->delete($viaTable, $columns)->execute();
+			if (is_array($relation->via)) {
+				/** @var $viaClass ActiveRecord */
+				if ($delete) {
+					$viaClass::deleteAll($columns);
+				} else {
+					$nulls = array();
+					foreach (array_keys($columns) as $a) {
+						$nulls[$a] = null;
+					}
+					$viaClass::updateAll($nulls, $columns);
+				}
 			} else {
+<<<<<<< HEAD
 				$nulls = [];
 				foreach (array_keys($columns) as $a) {
 					$nulls[$a] = null;
+=======
+				/** @var $viaTable string */
+				$command = static::getDb()->createCommand();
+				if ($delete) {
+					$command->delete($viaTable, $columns)->execute();
+				} else {
+					$nulls = array();
+					foreach (array_keys($columns) as $a) {
+						$nulls[$a] = null;
+					}
+					$command->update($viaTable, $nulls, $columns)->execute();
+>>>>>>> 2339313bf31232c059ab9b0655b49654c36024c1
 				}
-				$command->update($viaTable, $nulls, $columns)->execute();
 			}
 		} else {
 			$p1 = $model->isPrimaryKey(array_keys($relation->link));
@@ -1475,12 +1502,13 @@ class ActiveRecord extends Model
 	}
 
 	/**
-	 * @param array $keys
-	 * @return boolean
+	 * Returns a value indicating whether the given set of attributes represents the primary key for this model
+	 * @param array $keys the set of attributes to check
+	 * @return boolean whether the given set of attributes represents the primary key for this model
 	 */
-	private function isPrimaryKey($keys)
+	public static function isPrimaryKey($keys)
 	{
-		$pks = $this->primaryKey();
+		$pks = static::primaryKey();
 		foreach ($keys as $key) {
 			if (!in_array($key, $pks, true)) {
 				return false;

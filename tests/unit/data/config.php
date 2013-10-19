@@ -28,6 +28,16 @@ return [
 			'username' => 'postgres',
 			'password' => 'postgres',
 			'fixture' => __DIR__ . '/postgres.sql',
+<<<<<<< HEAD
 		],
 	],
 ];
+=======
+		),
+		'redis' => array(
+			'dsn' => 'redis://localhost:6379/0',
+			'password' => null,
+		),
+	),
+);
+>>>>>>> 2339313bf31232c059ab9b0655b49654c36024c1

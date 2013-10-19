@@ -37,6 +37,8 @@ use yii\base\Component;
  */
 class Query extends Component
 {
+	use BaseQuery;
+
 	/**
 	 * Sort ascending
 	 * @see orderBy
@@ -71,6 +73,7 @@ class Query extends Component
 	 */
 	public $from;
 	/**
+<<<<<<< HEAD
 	 * @var string|array query condition. This refers to the WHERE clause in a SQL statement.
 	 * For example, `age > 31 AND team = 1`.
 	 * @see where()
@@ -94,6 +97,9 @@ class Query extends Component
 	public $orderBy;
 	/**
 	 * @var array how to group the query results. For example, `['company', 'department']`.
+=======
+	 * @var array how to group the query results. For example, `array('company', 'department')`.
+>>>>>>> 2339313bf31232c059ab9b0655b49654c36024c1
 	 * This is used to construct the GROUP BY clause in a SQL statement.
 	 */
 	public $groupBy;
@@ -130,12 +136,6 @@ class Query extends Component
 	 * For example, `[':name' => 'Dan', ':age' => 31]`.
 	 */
 	public $params;
-	/**
-	 * @var string|callable $column the name of the column by which the query results should be indexed by.
-	 * This can also be a callable (e.g. anonymous function) that returns the index value based on the given
-	 * row data. For more details, see [[indexBy()]]. This property is only used by [[all()]].
-	 */
-	public $indexBy;
 
 
 	/**
@@ -154,6 +154,7 @@ class Query extends Component
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Sets the [[indexBy]] property.
 	 * @param string|callable $column the name of the column by which the query results should be indexed by.
 	 * This can also be a callable (e.g. anonymous function) that returns the index value based on the given
@@ -235,6 +236,8 @@ class Query extends Component
 	}
 
 	/**
+=======
+>>>>>>> 2339313bf31232c059ab9b0655b49654c36024c1
 	 * Returns the number of records.
 	 * @param string $q the COUNT expression. Defaults to '*'.
 	 * Make sure you properly quote column names in the expression.
@@ -367,6 +370,7 @@ class Query extends Component
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Sets the WHERE part of the query.
 	 *
 	 * The method requires a $condition parameter, and optionally a $params parameter
@@ -429,6 +433,9 @@ class Query extends Component
 	 * - `or not like`: similar to the `not like` operator except that `OR` is used to concatenate
 	 * the `NOT LIKE` predicates.
 	 *
+=======
+	 * @inheritDocs
+>>>>>>> 2339313bf31232c059ab9b0655b49654c36024c1
 	 * @param string|array $condition the conditions that should be put in the WHERE part.
 	 * @param array $params the parameters (name => value) to be bound to the query.
 	 * @return static the query object itself
@@ -653,6 +660,7 @@ class Query extends Component
 	}
 
 	/**
+<<<<<<< HEAD
 	 * Sets the ORDER BY part of the query.
 	 * @param string|array $columns the columns (and the directions) to be ordered by.
 	 * Columns can be specified in either a string (e.g. "id ASC, name DESC") or an array
@@ -730,6 +738,8 @@ class Query extends Component
 	}
 
 	/**
+=======
+>>>>>>> 2339313bf31232c059ab9b0655b49654c36024c1
 	 * Appends a SQL statement using UNION operator.
 	 * @param string|Query $sql the SQL statement to be appended using UNION
 	 * @return static the query object itself
