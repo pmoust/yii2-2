@@ -43,7 +43,7 @@ class DbPanel extends Panel
 		$queryTime = number_format($this->getTotalQueryTime($timings) * 1000) . ' ms';
 
 		return  Yii::$app->view->render('panels/db/summary',[
-			'timings' => $this->calculateTimings(), 
+			'timings' => $this->calculateTimings(),
 			'panel' => $this,
 			'queryCount' => $queryCount,
 			'queryTime' => $queryTime,

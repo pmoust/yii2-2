@@ -1,5 +1,6 @@
 /*! http://mths.be/punycode v1.2.1 by @mathias */
-;(function(root) {
+;
+(function (root) {
 
 	/** Detect free variables */
 	var freeExports = typeof exports == 'object' && exports;
@@ -17,38 +18,38 @@
 	 */
 	var punycode,
 
-	/** Highest positive signed 32-bit float value */
-	maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
+		/** Highest positive signed 32-bit float value */
+			maxInt = 2147483647, // aka. 0x7FFFFFFF or 2^31-1
 
-	/** Bootstring parameters */
-	base = 36,
-	tMin = 1,
-	tMax = 26,
-	skew = 38,
-	damp = 700,
-	initialBias = 72,
-	initialN = 128, // 0x80
-	delimiter = '-', // '\x2D'
+		/** Bootstring parameters */
+			base = 36,
+		tMin = 1,
+		tMax = 26,
+		skew = 38,
+		damp = 700,
+		initialBias = 72,
+		initialN = 128, // 0x80
+		delimiter = '-', // '\x2D'
 
-	/** Regular expressions */
-	regexPunycode = /^xn--/,
-	regexNonASCII = /[^ -~]/, // unprintable ASCII chars + non-ASCII chars
-	regexSeparators = /\x2E|\u3002|\uFF0E|\uFF61/g, // RFC 3490 separators
+		/** Regular expressions */
+			regexPunycode = /^xn--/,
+		regexNonASCII = /[^ -~]/, // unprintable ASCII chars + non-ASCII chars
+		regexSeparators = /\x2E|\u3002|\uFF0E|\uFF61/g, // RFC 3490 separators
 
-	/** Error messages */
-	errors = {
-		'overflow': 'Overflow: input needs wider integers to process',
-		'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
-		'invalid-input': 'Invalid input'
-	},
+		/** Error messages */
+			errors = {
+			'overflow': 'Overflow: input needs wider integers to process',
+			'not-basic': 'Illegal input >= 0x80 (not a basic code point)',
+			'invalid-input': 'Invalid input'
+		},
 
-	/** Convenience shortcuts */
-	baseMinusTMin = base - tMin,
-	floor = Math.floor,
-	stringFromCharCode = String.fromCharCode,
+		/** Convenience shortcuts */
+			baseMinusTMin = base - tMin,
+		floor = Math.floor,
+		stringFromCharCode = String.fromCharCode,
 
-	/** Temporary variable */
-	key;
+		/** Temporary variable */
+			key;
 
 	/*--------------------------------------------------------------------------*/
 
@@ -106,10 +107,10 @@
 	 */
 	function ucs2decode(string) {
 		var output = [],
-		    counter = 0,
-		    length = string.length,
-		    value,
-		    extra;
+			counter = 0,
+			length = string.length,
+			value,
+			extra;
 		while (counter < length) {
 			value = string.charCodeAt(counter++);
 			if ((value & 0xF800) == 0xD800 && counter < length) {
@@ -136,7 +137,7 @@
 	 * @returns {String} The new Unicode string (UCS-2).
 	 */
 	function ucs2encode(array) {
-		return map(array, function(value) {
+		return map(array,function (value) {
 			var output = '';
 			if (value > 0xFFFF) {
 				value -= 0x10000;
@@ -161,10 +162,10 @@
 		return codePoint - 48 < 10
 			? codePoint - 22
 			: codePoint - 65 < 26
-				? codePoint - 65
-				: codePoint - 97 < 26
-					? codePoint - 97
-					: base;
+			? codePoint - 65
+			: codePoint - 97 < 26
+			? codePoint - 97
+			: base;
 	}
 
 	/**
@@ -209,22 +210,22 @@
 	function decode(input) {
 		// Don't use UCS-2
 		var output = [],
-		    inputLength = input.length,
-		    out,
-		    i = 0,
-		    n = initialN,
-		    bias = initialBias,
-		    basic,
-		    j,
-		    index,
-		    oldi,
-		    w,
-		    k,
-		    digit,
-		    t,
-		    length,
-		    /** Cached calculation results */
-		    baseMinusT;
+			inputLength = input.length,
+			out,
+			i = 0,
+			n = initialN,
+			bias = initialBias,
+			basic,
+			j,
+			index,
+			oldi,
+			w,
+			k,
+			digit,
+			t,
+			length,
+			/** Cached calculation results */
+				baseMinusT;
 
 		// Handle the basic code points: let `basic` be the number of input code
 		// points before the last delimiter, or `0` if there is none, then copy
@@ -310,23 +311,23 @@
 	 */
 	function encode(input) {
 		var n,
-		    delta,
-		    handledCPCount,
-		    basicLength,
-		    bias,
-		    j,
-		    m,
-		    q,
-		    k,
-		    t,
-		    currentValue,
-		    output = [],
-		    /** `inputLength` will hold the number of code points in `input`. */
-		    inputLength,
-		    /** Cached calculation results */
-		    handledCPCountPlusOne,
-		    baseMinusT,
-		    qMinusT;
+			delta,
+			handledCPCount,
+			basicLength,
+			bias,
+			j,
+			m,
+			q,
+			k,
+			t,
+			currentValue,
+			output = [],
+			/** `inputLength` will hold the number of code points in `input`. */
+				inputLength,
+			/** Cached calculation results */
+				handledCPCountPlusOne,
+			baseMinusT,
+			qMinusT;
 
 		// Convert the input in UCS-2 to Unicode
 		input = ucs2decode(input);
@@ -426,7 +427,7 @@
 	 * string.
 	 */
 	function toUnicode(domain) {
-		return mapDomain(domain, function(string) {
+		return mapDomain(domain, function (string) {
 			return regexPunycode.test(string)
 				? decode(string.slice(4).toLowerCase())
 				: string;
@@ -442,7 +443,7 @@
 	 * @returns {String} The Punycode representation of the given domain name.
 	 */
 	function toASCII(domain) {
-		return mapDomain(domain, function(string) {
+		return mapDomain(domain, function (string) {
 			return regexNonASCII.test(string)
 				? 'xn--' + encode(string)
 				: string;
@@ -481,13 +482,13 @@
 	// like the following:
 	if (
 		typeof define == 'function' &&
-		typeof define.amd == 'object' &&
-		define.amd
-	) {
-		define(function() {
+			typeof define.amd == 'object' &&
+			define.amd
+		) {
+		define(function () {
 			return punycode;
 		});
-	}	else if (freeExports && !freeExports.nodeType) {
+	} else if (freeExports && !freeExports.nodeType) {
 		if (freeModule) { // in Node.js or RingoJS v0.8.0+
 			freeModule.exports = punycode;
 		} else { // in Narwhal or RingoJS v0.7.0-

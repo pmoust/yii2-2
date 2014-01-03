@@ -98,7 +98,7 @@
 			});
 		},
 
-		data: function() {
+		data: function () {
 			return this.data('yiiGridView');
 		}
 	};

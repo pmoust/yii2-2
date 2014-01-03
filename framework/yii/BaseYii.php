@@ -505,10 +505,10 @@ class BaseYii
 	public static function t($category, $message, $params = [], $language = null)
 	{
 		if (static::$app !== null) {
-			return static::$app->getI18n()->translate($category, $message, $params, $language ?: static::$app->language);
+			return static::$app->getI18n()->translate($category, $message, $params, $language ? : static::$app->language);
 		} else {
 			$p = [];
-			foreach ((array) $params as $name => $value) {
+			foreach ((array)$params as $name => $value) {
 				$p['{' . $name . '}'] = $value;
 			}
 			return ($p === []) ? $message : strtr($message, $p);

@@ -9,7 +9,7 @@ namespace yii\debug\components\search\matches;
 
 /**
  * MatcherInterface is the interface that should be implemented by all matchers that will be used in filter.
- * 
+ *
  * @author Mark Jebri <mark.github@yandex.ru>
  * @since 2.0
  */

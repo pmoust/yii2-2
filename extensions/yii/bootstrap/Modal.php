@@ -202,7 +202,7 @@ class Modal extends Widget
 			'tabindex' => -1,
 		], $this->options);
 		Html::addCssClass($this->options, 'modal');
-		
+
 		if ($this->clientOptions !== false) {
 			$this->clientOptions = array_merge(['show' => false], $this->clientOptions);
 		}

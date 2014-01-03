@@ -35,7 +35,7 @@
 					settings: settings
 				});
 
-				$e.on('click.yiiCaptcha', function() {
+				$e.on('click.yiiCaptcha', function () {
 					methods.refresh.apply($e);
 					return false;
 				});
@@ -50,7 +50,7 @@
 				url: $e.data('yiiCaptcha').settings.refreshUrl,
 				dataType: 'json',
 				cache: false,
-				success: function(data) {
+				success: function (data) {
 					$e.attr('src', data.url);
 					$('body').data(settings.hashKey, [data.hash1, data.hash2]);
 				}
@@ -64,7 +64,7 @@
 			});
 		},
 
-		data: function() {
+		data: function () {
 			return this.data('yiiCaptcha');
 		}
 	};

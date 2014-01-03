@@ -73,4 +73,4 @@ class DebugAction extends Action
 			'result' => $result,
 		];
 	}
-} 
+}

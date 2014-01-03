@@ -10,7 +10,7 @@
  * @since 2.0
  */
 (function ($) {
-	
+
 	$.fn.yiiActiveForm = function (method) {
 		if (methods[method]) {
 			return methods[method].apply(this, Array.prototype.slice.call(arguments, 1));
@@ -119,7 +119,7 @@
 			});
 		},
 
-		data: function() {
+		data: function () {
 			return this.data('yiiActiveForm');
 		},
 
@@ -200,13 +200,13 @@
 		$.each(attributes, function (i, attribute) {
 			var $input = findInput($form, attribute);
 			if (attribute.validateOnChange) {
-				$input.on('change.yiiActiveForm', function () {
+				$input.on('change.yiiActiveForm',function () {
 					validateAttribute($form, attribute, false);
 				}).on('blur.yiiActiveForm', function () {
-					if (attribute.status == 0 || attribute.status == 1) {
-						validateAttribute($form, attribute, !attribute.status);
-					}
-				});
+						if (attribute.status == 0 || attribute.status == 1) {
+							validateAttribute($form, attribute, !attribute.status);
+						}
+					});
 			}
 			if (attribute.validateOnType) {
 				$input.on('keyup.yiiActiveForm', function () {
@@ -257,7 +257,7 @@
 			});
 		}, data.settings.validationDelay);
 	};
-	
+
 	/**
 	 * Performs validation.
 	 * @param $form jQuery the jquery representation of the form

@@ -9,7 +9,7 @@
 	background: url(authchoice.png) no-repeat;
 }
 
-.auth-icon.google, 
+.auth-icon.google,
 .auth-icon.google_openid,
 .auth-icon.google_oauth {
 	background-position: 0 -34px;
